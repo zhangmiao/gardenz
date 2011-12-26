@@ -16,12 +16,12 @@ public class CommonDao {
 
     private Connection conn;
     
-    public CommonDao() throws DaoException {
-        this.conn = ConnectionManager.getConnection();
-    }
     
-    public CommonDao(String driver,String url) throws DaoException {
-        this.conn = ConnectionManager.getConnection(driver,url);
+    public CommonDao(Connection conn) throws DaoException {
+    	if(conn == null){
+    		throw new DaoException("connection not opened!");
+    	}
+        this.conn = conn;
     }
 
     public void begin() throws DaoException{
