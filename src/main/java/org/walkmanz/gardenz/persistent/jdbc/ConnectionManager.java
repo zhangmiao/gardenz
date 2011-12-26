@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 public class ConnectionManager {
     
 	private static final String DEFAULT_URL = "jdbc:mysql://172.17.0.120:3306/xhh?user=xhh&password=xinhua&useUnicode=true&characterEncoding=UTF-8";

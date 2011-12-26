@@ -3,6 +3,7 @@ package org.walkmanz.gardenz.persistent.jdbc;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+
 public class DaoException extends Exception {
 
 	private Throwable throwable = null;
