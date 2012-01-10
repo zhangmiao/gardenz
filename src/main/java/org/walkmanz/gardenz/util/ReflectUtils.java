@@ -5,8 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,7 +53,7 @@ public class ReflectUtils {
 	}
 	
 
-	public static Object createInstance(Class clazz) {
+	public static Object createInstance(Class<?> clazz) {
 		Object obj = null;
 		try {
 		    obj = clazz.newInstance();
@@ -74,11 +77,10 @@ public class ReflectUtils {
 	}
 	
 	public static Map<String, Object> beanToMap(Object entity,
-			Class clazz) {
-		Class c = entity.getClass();
+			Class<?> clazz) {
 		Object fieldValue = null;
 		String fieldName = null;
-		Field[] fields = c.getDeclaredFields();
+		List<Field> fields = getAllFields(clazz);
 		Map<String, Object> fieldMap = new HashMap<String, Object>();
 		for (Field field : fields) {
 			fieldName = field.getName();
@@ -111,7 +113,7 @@ public class ReflectUtils {
 	 * @param clazz
 	 * @return
 	 */
-	public static Object mapToBean(Map map, String clazz) {
+	public static Object mapToBean(Map<String, Object> map, String clazz) {
 		Object obj = null;
 		try {
 			obj = mapToBean(map, Class.forName(clazz));
@@ -127,8 +129,8 @@ public class ReflectUtils {
 	 * @param cls
 	 * @return
 	 */
-	public static Object mapToBean(Map map, Class cls) {
-		Object obj = null;
+	public static <T> T mapToBean(Map<String, Object>  map, Class<T> cls) {
+		T obj = null;
 
 		try {
 			obj = cls.newInstance();
@@ -139,12 +141,12 @@ public class ReflectUtils {
 		}
 
 		// 取出bean里的所有方法
-		Method[] methods = cls.getMethods();
-		for (int i = 0; i < methods.length; i++) {
+		List<Method> methods = getAllMethods(cls);
+		for (int i = 0; i < methods.size(); i++) {
 			// 取方法名
-			String method = methods[i].getName();
+			String method = methods.get(i).getName();
 			// 取出方法的类型
-			Class[] cc = methods[i].getParameterTypes();
+			Class<?>[] cc = methods.get(i).getParameterTypes();
 			if (cc.length != 1)
 				continue;
 
@@ -175,31 +177,57 @@ public class ReflectUtils {
 		return obj;
 	}
 
+	public static List<Class<?>> getAllClasses(Class<?> clazz){
+		List<Class<?>> list = new ArrayList<Class<?>>();
+		if(clazz.getSuperclass() != null){
+			list = getAllClasses(clazz.getSuperclass());
+		}
+		list.add(clazz);
+		return list;
+	}
+	
+	public static List<Field> getAllFields(Class<?> clazz){
+		List<Class<?>> classes  = getAllClasses(clazz);
+		List<Field> fields = new ArrayList<Field>();
+		for(Class<?> c : classes){
+			fields.addAll(Arrays.asList(c.getDeclaredFields()));
+		}
+		return fields;
+	}
 
+	public static List<Method> getAllMethods(Class<?> clazz){
+		List<Class<?>> classes  = getAllClasses(clazz);
+		List<Method> methods = new ArrayList<Method>();
+		for(Class<?> c : classes){
+			methods.addAll(Arrays.asList(c.getDeclaredMethods()));
+		}
+		return methods;
+	}
+	
 	private static void setValue(String type, Object value, int i,
-			Method[] method, Object bean) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+			List<Method> methods, Object bean) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if (value != null && !value.equals("")) {
 
 			if (type.equals("String")) {
 				// 第一个参数:从中调用基础方法的对象 第二个参数:用于方法调用的参数
-				method[i].invoke(bean, new Object[] { value });
+				methods.get(i).invoke(bean, new Object[] { value });
 			} else if (type.equals("int") || type.equals("Integer")) {
-				method[i].invoke(bean, new Object[] { new Integer(""
+				methods.get(i).invoke(bean, new Object[] { new Integer(""
 						+ value) });
 			} else if (type.equals("long") || type.equals("Long")) {
-				method[i].invoke(bean,
+				methods.get(i).invoke(bean,
 						new Object[] { new Long("" + value) });
 			} else if (type.equals("float") || type.equals("Float")) {
-				method[i].invoke(bean,
+				methods.get(i).invoke(bean,
 						new Object[] { new Float("" + value) });
 			} else if (type.equals("double") || type.equals("Double")) {
-				method[i].invoke(bean,
+				methods.get(i).invoke(bean,
 						new Object[] { new Double("" + value) });
 			} else if (type.equals("boolean") || type.equals("Boolean")) {
-				method[i].invoke(bean, new Object[] { new Boolean(""
+				methods.get(i).invoke(bean, new Object[] { new Boolean(""
 						+ value) });
 			} else if (type.equals("BigDecimal")) {
-				method[i].invoke(bean, new Object[] { new BigDecimal(""
+				methods.get(i).invoke(bean, new Object[] { new BigDecimal(""
 						+ value) });
 			} else if (type.equals("Date")) {
 				Date date = null;
@@ -212,21 +240,25 @@ public class ReflectUtils {
 							format);
 				}
 				if (date != null) {
-					method[i].invoke(bean, new Object[] { date });
+					methods.get(i).invoke(bean, new Object[] { date });
 				}
 			} else if (type.equals("byte[]")) {
-				method[i].invoke(bean,
+				methods.get(i).invoke(bean,
 						new Object[] { new String(value + "").getBytes() });
 			}
 		}
 	}
 	
 	private static Object invokeGet(Object entity, String fieldName) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-       
-    	String prefix = fieldName.substring(1);
-    	String suffix = fieldName.substring(0,1);
+		String methodPrefix = "get";
+        if(fieldName.substring(0, 2).equals("is")){
+        	fieldName = fieldName.substring(2);
+        	methodPrefix = "is";
+        }
+    	String prefix = fieldName.substring(0,1);
+    	String suffix = fieldName.substring(1);
         Method method = entity.getClass().getMethod(
-                "get" + prefix.toUpperCase() + suffix);
+        		methodPrefix + prefix.toUpperCase() + suffix);
         return method.invoke(entity);
         
     }
