@@ -19,9 +19,6 @@ public class CommonDao {
     
     
     public CommonDao(final Connection conn) throws DaoException {
-    	if(conn == null){
-    		throw new DaoException("connection not opened!");
-    	}
         this.conn = conn;
     }
 
@@ -72,9 +69,9 @@ public class CommonDao {
     }
     
     
-    private List convert(ResultSet rs) throws DaoException {
+    private List<Map<String,?>>  convert(ResultSet rs) throws DaoException {
 
-        List retList = new ArrayList();
+        List<Map<String,?>> retList = new ArrayList<Map<String,?>>();
 
         try {
             ResultSetMetaData meta = rs.getMetaData();
@@ -82,7 +79,7 @@ public class CommonDao {
             int colCount = meta.getColumnCount();
 
             while (rs.next()) {
-                Map recordMap = new HashMap();
+                Map<String,Object> recordMap = new HashMap<String,Object>();
                 for (int i = 1; i <= colCount; i++) {
                     String name = meta.getColumnName(i);
                     Object value = rs.getObject(i);
@@ -96,10 +93,10 @@ public class CommonDao {
         return retList;
     }
     
-    private void apply(PreparedStatement pstmt, List params) throws DaoException {
+    private void apply(PreparedStatement pstmt, List<?> params) throws DaoException {
         try {
             if (params != null && params.size() > 0) {
-                Iterator it = params.iterator();
+                Iterator<?> it = params.iterator();
                 int index = 1;
                 while(it.hasNext()) {
                     
@@ -117,8 +114,8 @@ public class CommonDao {
         }
     }
     
-    public List query(String sql, List params) throws DaoException {
-        List result = null;
+    public List<Map<String,?>> query(String sql, List<?> params) throws DaoException {
+        List<Map<String,?>> result = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
@@ -148,13 +145,13 @@ public class CommonDao {
         return result;
     }
     
-    public Object queryOne(String sql, List params) throws DaoException {
-        List list = this.query(sql, params);
+    public Object queryOne(String sql, List<?> params) throws DaoException {
+        List<Map<String,?>> list = this.query(sql, params);
         
         if(list == null || list.size() == 0) {
             throw new DaoException("data not exist");
         } else {
-            Map record = (Map)list.get(0);
+            Map<String,?> record = (Map<String,?>)list.get(0);
             if(record == null || record.size() == 0 ) {
                 throw new DaoException("data not exist");
             } else {
@@ -163,7 +160,7 @@ public class CommonDao {
         }
     }
     
-    public int execute(String sql, List params) throws DaoException {
+    public int execute(String sql, List<?> params) throws DaoException {
         int ret = 0;
         PreparedStatement pstmt = null;
         try {
@@ -184,23 +181,23 @@ public class CommonDao {
         return ret;
     }
     
-    public List[] queryBatch(String[] sqlArray, List[] paramArray) throws DaoException {
-        List rets = new ArrayList();
+    public List<Map<String,?>>[] queryBatch(String[] sqlArray, List<?>[] paramArray) throws DaoException {
+    	List<List<Map<String,?>>> rets = new ArrayList<List<Map<String,?>>>();
         if(sqlArray.length != paramArray.length) {
             throw new DaoException("sql size not equal parameter size");
         } else {
             for(int i = 0; i < sqlArray.length; i++) {
                 String sql = sqlArray[i];
-                List param = paramArray[i];
-                List ret = this.query(sql, param);
+                List<?> param = paramArray[i];
+                List<Map<String,?>> ret = this.query(sql, param);
                 rets.add(ret);
             }
-            return (List[])rets.toArray();
+            return (List<Map<String,?>>[])rets.toArray();
         }
     }
     
-    public int[] executeBatch(String[] sqlArray, List[] paramArray) throws DaoException {
-        List rets = new ArrayList();
+    public int[] executeBatch(String[] sqlArray, List<?>[] paramArray) throws DaoException {
+        List<Integer> rets = new ArrayList<Integer>();
         if(sqlArray.length != paramArray.length) {
             throw new DaoException("sql size not equal parameter size");
         } else {
