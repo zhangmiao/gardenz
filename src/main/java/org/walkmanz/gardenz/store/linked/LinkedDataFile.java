@@ -71,8 +71,6 @@ public class LinkedDataFile extends BufferedDataFile {
 			// 读文件头logo
 			String logoString = super.readUTF(LinkedIndexFile.DATA_FILE_HEAD_LOGO.getBytes().length, 0);
 			
-			System.out.println("#######" + HexUtils.printHexFromBytes(logoString.getBytes()));
-			
 			if (! logoString.equals(LinkedIndexFile.DATA_FILE_HEAD_LOGO)) {
 				throw new FileFormatException("数据文件格式错误");
 			}
