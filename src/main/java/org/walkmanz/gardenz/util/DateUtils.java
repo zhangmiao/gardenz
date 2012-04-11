@@ -13,7 +13,7 @@ public class DateUtils {
 	/**
 	 * 按照指定的格式格式化时间
 	 * @param str
-	 * @param fmt
+	 * @param pattern
 	 * @return
 	 */
 	public static Date convertStrToDate(String str, String pattern){
@@ -29,7 +29,7 @@ public class DateUtils {
 	
 	/**
      * 按照指定的格式格式化当前时间
-     * @param String pattern
+     * @param  pattern
      */
     public static String formatCurrentTime(String pattern) {
         Date date = new Date(System.currentTimeMillis());
@@ -39,8 +39,8 @@ public class DateUtils {
 
     /**
      * 按照指定的格式格式化时间
-     * @param Date time
-     * @param String patter
+     * @param  time
+     * @param  pattern
      */
     public static String convertDateToStr(Date time, String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);

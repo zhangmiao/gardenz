@@ -1,5 +1,5 @@
 
-package org.walkmanz.gardenz.persistent.jdbc;
+package org.walkmanz.gardenz.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

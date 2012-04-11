@@ -1,4 +1,3 @@
-
 package org.walkmanz.gardenz.util;
 
 public class ReflectException extends RuntimeException{
@@ -18,5 +17,4 @@ public class ReflectException extends RuntimeException{
     public ReflectException(Throwable cause) {
         super(cause);
     }
-
 }

@@ -16,8 +16,7 @@ import java.util.Map;
  * 反射工具类
  * 
  * @author zhangmiao
- * 
- * @param <T>
+ *
  */
 public class ReflectUtils {
 

@@ -114,7 +114,7 @@ public class DecimalUtils {
 	  
     /**
      * 判断输入的字符串是不是数字
-     * @param String src
+     * @param src
      */
     public static boolean isNumeric(String src) {
         char[] cc = src.toCharArray();
@@ -130,7 +130,7 @@ public class DecimalUtils {
     
     /**
      * 判断输入的字符串是不是数字
-     * @param char cc
+     * @param cc
      */
     public static boolean isNumeric(char[] cc) {
         for (char c : cc) {
@@ -145,8 +145,8 @@ public class DecimalUtils {
     
     /**
      * 按照指定的格式来格式化数字
-     * @param double src
-     * @param String pattern
+     * @param src
+     * @param pattern
      */
     public static String formatDecimal(double src, String pattern) {
         DecimalFormat df = new DecimalFormat(pattern);

@@ -1,6 +1,8 @@
 package org.walkmanz.gardenz.util;
 
-public final class ByteArrayUtils {
+
+@Deprecated
+public final class ArrayUtils {
 
 	private static final int INT_SIZE = 4;
 	private static final long LOW_8BIT_MASK = 0xFF;
