@@ -1,13 +1,12 @@
 package org.walkmanz.gardenz.store.linked;
 
-import com.xh.queued.AbstractQueued;
-import com.xh.queued.ConfigException;
-import com.xh.queued.Queued;
+import java.util.AbstractQueue;
+import java.util.Queue;
 
 import java.io.IOException;
 import java.util.Iterator;
 
-public class LinkedFileQueueAdapter extends AbstractQueued<byte[]> implements Queued<byte[]> {
+public class LinkedFileQueueAdapter extends AbstractQueue<byte[]> implements Queue<byte[]> {
 	
 	private final LinkedFileQueue queue;
 	
@@ -16,7 +15,7 @@ public class LinkedFileQueueAdapter extends AbstractQueued<byte[]> implements Qu
 		try {
 			queue = new LinkedFileQueue(path);
 		} catch (IOException e) {
-			throw new ConfigException(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -57,7 +56,7 @@ public class LinkedFileQueueAdapter extends AbstractQueued<byte[]> implements Qu
 		throw new UnsupportedOperationException("size Unsupported now");
 	}
 
-	@Override
+	//@Override
 	public void close() {
 		try{
 			if (queue != null) {
