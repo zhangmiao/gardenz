@@ -1,17 +1,17 @@
 package org.walkmanz.gardenz.store.linked;
 
-import org.walkmanz.gardenz.store.ChannelDataFile;
-import org.walkmanz.gardenz.store.FileFormatException;
-import org.walkmanz.gardenz.util.IoUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.walkmanz.gardenz.store.ChannelDataFile;
+import org.walkmanz.gardenz.store.FileFormatException;
+import org.walkmanz.gardenz.util.IoUtils;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class LinkedIndexFile extends ChannelDataFile {
     
     private static final int INDEX_FILE_LIMIT_LENGTH = 32;
     
-    public static final int DATA_FILE_LIMIT_LENGTH = 1024 * 1024 * 128;
+    public static final int DATA_FILE_LIMIT_LENGTH = 1024 * 1024 * 256;
     
     public static final int DATA_MESSAGE_START_POSITION = 32;
     

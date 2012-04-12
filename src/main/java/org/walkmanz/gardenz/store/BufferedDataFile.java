@@ -1,13 +1,13 @@
 package org.walkmanz.gardenz.store;
 
-import org.walkmanz.gardenz.util.IoUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+
+import org.walkmanz.gardenz.util.IoUtils;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class BufferedDataFile extends DataFile {
 	public static final int BUFFER_LIMIT_LENGTH = 1024 * 1024;
 
 	/**
-	 * 文件实例
+	 * 文件实例, 不变量
 	 */
 	private final File file;
 
@@ -34,30 +34,21 @@ public class BufferedDataFile extends DataFile {
 	private final MapMode mapMode;
 	
 	
-	
+	/**
+	 * 状态变量
+	 */
 	private long mappedStartPosition;
 	
 	private MappedByteBuffer mappedByteBuffer;
 	
 	protected boolean isCreateFile = false;
-
 	
-	/**
-	 * 构造函数，会打开指定的文件
-	 * 
-	 * @param file
-	 * @throws java.io.IOException
-	 */
+	
 	public BufferedDataFile(File file, boolean force) throws IOException {
-		this(file.getAbsolutePath(), BufferedDataFile.BUFFER_LIMIT_LENGTH, force);
-	}
-	
-	public BufferedDataFile(String path, boolean force) throws IOException {
-		this(path, BufferedDataFile.BUFFER_LIMIT_LENGTH, force);
+		this(file, BufferedDataFile.BUFFER_LIMIT_LENGTH, force);
 	}
 
-	public BufferedDataFile(String path, int bufferLimitLength , boolean force) throws IOException {
-		File file = new File(path);
+	public BufferedDataFile(File file, int bufferLimitLength , boolean force) throws IOException {
 		if (!file.exists()) {
 			file.createNewFile();
 			this.isCreateFile = true;
@@ -78,7 +69,7 @@ public class BufferedDataFile extends DataFile {
 	 * 获得文件名
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public String getFileName() throws IOException {
@@ -89,7 +80,7 @@ public class BufferedDataFile extends DataFile {
 	 * 删除文件
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public boolean delete() throws IOException {
@@ -99,8 +90,9 @@ public class BufferedDataFile extends DataFile {
 
 	/**
 	 * 同步数据到磁盘
-	 *
-	 * @throws IOException
+	 * 
+	 * @param condition
+	 * @throws Exception
 	 */
 	@Override
 	public void sync() throws IOException {
@@ -111,7 +103,7 @@ public class BufferedDataFile extends DataFile {
 	 * 获取大小
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public long size() throws IOException {
@@ -121,7 +113,7 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 设置文件指针位置, 可能会改变缓冲区在通道中的取值位置
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public void position(long position) throws IOException {
@@ -140,7 +132,7 @@ public class BufferedDataFile extends DataFile {
 	 * 获取文件指针位置
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public long position() throws IOException {
@@ -152,7 +144,7 @@ public class BufferedDataFile extends DataFile {
 	 * 
 	 * @param length
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	private boolean hasRemain(int length) throws IOException {
 		int size = this.mappedByteBuffer.capacity();
@@ -167,7 +159,7 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 从指定位置重新映射一个缓冲区
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	private void map(long position) throws IOException {
 		if (mappedByteBuffer != null) {
@@ -183,7 +175,7 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 关闭通道
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	@Override
 	public void close() throws IOException {
@@ -198,8 +190,8 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 写一个bytes到文件的当前指针位置, 文件的指针会向后移动bytes的长度
 	 * 
-	 * @param bytes
-	 * @throws java.io.IOException
+	 * @param buffer
+	 * @throws IOException
 	 */
 	@Override
 	public long write(final byte[] bytes) throws IOException {
@@ -215,9 +207,9 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 写一个bytes到文件的指定位置, 文件指针不会移动
 	 * 
-	 * @param bytes
-	 * @param position
-	 * @throws java.io.IOException
+	 * @param offset
+	 * @param buffer
+	 * @throws IOException
 	 */
 	@Override
 	public void write(final byte[] bytes, final long position)
@@ -232,8 +224,8 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 按当前位置文件读取数据到bytes，直到读满或者读到文件结尾。 文件的指针会向后移动bytes的大小
 	 * 
-	 * @param bytes
-	 * @throws java.io.IOException
+	 * @param buffer
+	 * @throws IOException
 	 */
 	@Override
 	public void read(final byte[] bytes) throws IOException {
@@ -248,9 +240,9 @@ public class BufferedDataFile extends DataFile {
 	/**
 	 * 从文件的指定位置读取数据到bytes, 直到读满或者读到文件结尾。 文件指针不会移动
 	 * 
-	 * @param bytes
-	 * @param position
-	 * @throws java.io.IOException
+	 * @param offset
+	 * @param buffer
+	 * @throws IOException
 	 */
 	@Override
 	public void read(final byte[] bytes, final long position)

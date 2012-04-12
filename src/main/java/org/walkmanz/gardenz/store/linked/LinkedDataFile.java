@@ -1,15 +1,14 @@
 package org.walkmanz.gardenz.store.linked;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.walkmanz.gardenz.store.BufferedDataFile;
 import org.walkmanz.gardenz.store.FileEOFException;
 import org.walkmanz.gardenz.store.FileFormatException;
 import org.walkmanz.gardenz.store.WriteState;
-import org.walkmanz.gardenz.util.HexUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * 
@@ -25,15 +24,11 @@ public class LinkedDataFile extends BufferedDataFile {
 	 */
 	private final int fileLimitLength = LinkedIndexFile.DATA_FILE_LIMIT_LENGTH;
 
+
 	
-	public LinkedDataFile(File file) throws IOException, FileFormatException {
+	public LinkedDataFile(File file, int bufferSize) throws IOException, FileFormatException {
 		
-		this(file.getAbsolutePath());
-	}
-	
-	public LinkedDataFile(String path) throws IOException, FileFormatException {
-		
-		super(path, true);
+		super(file, bufferSize, true);
 		
 		if(super.isCreateFile){
 			//设置头文件长度
@@ -75,7 +70,6 @@ public class LinkedDataFile extends BufferedDataFile {
 				throw new FileFormatException("数据文件格式错误");
 			}
 
-			
 			LOG.info("数据文件 {} 已打开", super.getFileName());
 		}
 	}

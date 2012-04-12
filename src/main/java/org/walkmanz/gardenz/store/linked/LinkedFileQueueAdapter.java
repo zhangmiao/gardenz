@@ -1,15 +1,22 @@
 package org.walkmanz.gardenz.store.linked;
 
-import java.util.AbstractQueue;
-import java.util.Queue;
-
 import java.io.IOException;
+import java.util.AbstractQueue;
 import java.util.Iterator;
+import java.util.Queue;
 
 public class LinkedFileQueueAdapter extends AbstractQueue<byte[]> implements Queue<byte[]> {
 	
 	private final LinkedFileQueue queue;
 	
+	
+	public LinkedFileQueueAdapter(String path, int bufferSize) {
+		try {
+			queue = new LinkedFileQueue(path, bufferSize);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 	public LinkedFileQueueAdapter(String path) {
 		try {
@@ -43,20 +50,26 @@ public class LinkedFileQueueAdapter extends AbstractQueue<byte[]> implements Que
 
 	@Override
 	public byte[] peek() {
-		throw new UnsupportedOperationException("peek Unsupported now");
+		byte[] bytes = null;
+		try {
+			bytes = queue.peek();
+		} catch (IOException ex) {
+			return null;
+		}
+		return bytes;
 	}
 
 	@Override
 	public Iterator<byte[]> iterator() {
-		throw new UnsupportedOperationException("iterator Unsupported now");
+		throw new UnsupportedOperationException("暂不支持iterator");
 	}
 
 	@Override
 	public int size() {
-		throw new UnsupportedOperationException("size Unsupported now");
+		return this.queue.size();
 	}
 
-	//@Override
+
 	public void close() {
 		try{
 			if (queue != null) {
