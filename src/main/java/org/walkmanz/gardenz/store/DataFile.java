@@ -1,8 +1,8 @@
 package org.walkmanz.gardenz.store;
 
-import org.walkmanz.gardenz.util.BytesUtils;
-
 import java.io.IOException;
+
+import org.walkmanz.gardenz.util.BytesUtils;
 
 public abstract class DataFile {
 	
@@ -10,7 +10,7 @@ public abstract class DataFile {
 	 * 获得文件名
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract String getFileName() throws IOException;
 
@@ -18,13 +18,14 @@ public abstract class DataFile {
 	 * 删除文件
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract boolean delete() throws IOException;
 	
 	/**
 	 * 同步数据到磁盘
-	 *
+	 * 
+	 * @param condition
 	 * @throws Exception
 	 */
 	public abstract void sync() throws IOException;
@@ -33,7 +34,7 @@ public abstract class DataFile {
 	 * 获取大小
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract long size() throws IOException;
 	
@@ -41,7 +42,7 @@ public abstract class DataFile {
 	/**
 	 * 设置文件指针位置, 可能会改变缓冲区在通道中的取值位置
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract void position(long position) throws IOException;
 
@@ -49,14 +50,14 @@ public abstract class DataFile {
 	 * 获取文件指针位置
 	 * 
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract long position() throws IOException;
 
 	/**
 	 * 关闭通道
 	 * 
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public abstract void close() throws IOException;
 
@@ -64,17 +65,17 @@ public abstract class DataFile {
 	/**
 	 * 写一个bytes到文件的当前指针位置, 文件的指针会向后移动bytes的长度
 	 * 
-	 * @param bytes
-	 * @throws java.io.IOException
+	 * @param buffer
+	 * @throws IOException
 	 */
 	public abstract long write(final byte[] bytes) throws IOException;
 
 	/**
 	 * 写一个bytes到文件的指定位置, 文件指针不会移动
 	 * 
-	 * @param bytes
-	 * @param position
-	 * @throws java.io.IOException
+	 * @param offset
+	 * @param buffer
+	 * @throws IOException
 	 */
 	public abstract void write(final byte[] bytes, final long position)
 			throws IOException;
@@ -82,7 +83,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置写一个int, 指针会移动
 	 * @param data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeInt(final int data) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -93,7 +94,7 @@ public abstract class DataFile {
 	 * 去指定位置写一个int, 指针不会移动
 	 * @param data
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeInt(final int data, final long position) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -103,7 +104,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置写一个float, 指针会移动
 	 * @param data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeFloat(final float data) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -114,7 +115,7 @@ public abstract class DataFile {
 	 * 去指定位置写一个float, 指针不会移动
 	 * @param data
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeFloat(final float data, final long position) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -124,7 +125,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置写一个long, 指针会移动
 	 * @param data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeLong(final long data) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -135,7 +136,7 @@ public abstract class DataFile {
 	 * 去指定位置写一个long, 指针不会移动
 	 * @param data
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeLong(final long data, final long position) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -145,7 +146,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置写一个double, 指针会移动
 	 * @param data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeDouble(final double data) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -156,7 +157,7 @@ public abstract class DataFile {
 	 * 去指定位置写一个double, 指针不会移动
 	 * @param data
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeDouble(final double data, final long position) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -166,7 +167,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置写一个String, 指针会移动
 	 * @param data
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeUTF(final String data) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -177,7 +178,7 @@ public abstract class DataFile {
 	 * 去指定位置写一个String, 指针不会移动
 	 * @param data
 	 * @param position
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public void writeUTF(final String data, final long position) throws IOException{
 		byte[] buffer = BytesUtils.getBytes(data);
@@ -188,17 +189,17 @@ public abstract class DataFile {
 	/**
 	 * 按当前位置文件读取数据到bytes，直到读满或者读到文件结尾。 文件的指针会向后移动bytes的大小
 	 * 
-	 * @param bytes
-	 * @throws java.io.IOException
+	 * @param buffer
+	 * @throws IOException
 	 */
 	public abstract void read(final byte[] bytes) throws IOException;
 	
 	/**
 	 * 从文件的指定位置读取数据到bytes, 直到读满或者读到文件结尾。 文件指针不会移动
 	 * 
-	 * @param bytes
-	 * @param position
-	 * @throws java.io.IOException
+	 * @param offset
+	 * @param buffer
+	 * @throws IOException
 	 */
 	public abstract void read(final byte[] bytes, final long position)
 			throws IOException;
@@ -208,7 +209,7 @@ public abstract class DataFile {
 	 * 
 	 * @param size
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public byte[] read(int size) throws IOException {
 		byte[] bytes = new byte[size];
@@ -222,7 +223,7 @@ public abstract class DataFile {
 	 * @param size
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
     public byte[] read(int size, long position) throws IOException {
     	byte[] bytes = new byte[size];
@@ -234,7 +235,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置读一个int, 指针会移动
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public int readInt() throws IOException {
 		byte[] bytes = new byte[4];
@@ -246,7 +247,7 @@ public abstract class DataFile {
 	 * 从指定位置度一个int, 指针不会移动
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public int readInt(long position)  throws IOException {
 		byte[] bytes = new byte[4];
@@ -257,7 +258,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置读一个float, 指针会移动
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public float readFloat() throws IOException {
 		byte[] bytes = new byte[4];
@@ -269,7 +270,7 @@ public abstract class DataFile {
 	 * 从指定位置度一个float, 指针不会移动
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public float readFloat(long position) throws IOException {
 		byte[] bytes = new byte[4];
@@ -280,7 +281,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置读一个long, 指针会移动
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public long readLong() throws IOException {
 		byte[] bytes = new byte[8];
@@ -292,7 +293,7 @@ public abstract class DataFile {
 	 * 从指定位置度一个long, 指针不会移动
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public long readLong(long position)  throws IOException {
 		byte[] bytes = new byte[8];
@@ -304,7 +305,7 @@ public abstract class DataFile {
 	/**
 	 * 当前位置读一个double, 指针会移动
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public double readDouble()  throws IOException {
 		byte[] bytes = new byte[8];
@@ -316,7 +317,7 @@ public abstract class DataFile {
 	 * 从指定位置度一个double, 指针不会移动
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public double readDouble(long position)  throws IOException {
 		byte[] bytes = new byte[8];
@@ -326,9 +327,10 @@ public abstract class DataFile {
 	
 	/**
 	 * 从当前位置读一个大小为size的字符串, 指针会移动
-	 * @param size
+	 * @param stringSize
+	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public String readUTF(int size) throws IOException {
 		byte[] bytes = new byte[size];
@@ -338,10 +340,10 @@ public abstract class DataFile {
 	
 	/**
 	 * 从指定位置position读一个大小为size的字符串, 指针不会移动
-	 * @param size
+	 * @param stringSize
 	 * @param position
 	 * @return
-	 * @throws java.io.IOException
+	 * @throws IOException
 	 */
 	public String readUTF(int size, long position) throws IOException {
 		byte[] bytes = new byte[size];

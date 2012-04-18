@@ -69,7 +69,7 @@ public class LinkedFileQueueAdapter extends AbstractQueue<byte[]> implements Que
 		return this.queue.size();
 	}
 
-
+	//@Override
 	public void close() {
 		try{
 			if (queue != null) {

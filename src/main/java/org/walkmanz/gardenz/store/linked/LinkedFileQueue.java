@@ -3,6 +3,8 @@ package org.walkmanz.gardenz.store.linked;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -35,6 +37,10 @@ public class LinkedFileQueue {
 	private LinkedDataFile writerHandler;
 	
 	private LinkedDataFile readerHandler;
+	
+	private final Executor executor = Executors.newSingleThreadExecutor();
+	
+	
 	
 	public LinkedFileQueue(final String path) throws IOException {
 		this(path,DEFAULT_BUFFER_LIMIT_LENGTH);
@@ -90,6 +96,34 @@ public class LinkedFileQueue {
 		int readerIndex = this.indexFile.getReaderIndex();
 		this.readerHandler = getHandler(readerIndex);
 		this.readerHandler.position(this.indexFile.getReaderPosition());
+		
+		executor.execute(new Sync());
+			
+	}
+	
+	public class Sync implements Runnable {
+		@Override
+		public void run() {
+			while (true) {
+				if (writerHandler != null) {
+					try {
+						lock.lock();
+						writerHandler.sync();
+					} catch (Exception e) {
+						break;
+					}finally{
+						lock.unlock();
+					}
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						break;
+					}
+				} else {
+					break;
+				}
+			}
+		}
 	}
 	
 	

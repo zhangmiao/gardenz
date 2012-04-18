@@ -29,7 +29,7 @@ public class LinkedIndexFile extends ChannelDataFile {
     
     public static final String DATA_FILE_HEAD_LOGO = "qlinkidb";
     
-    private static final int INDEX_FILE_LIMIT_LENGTH = 32;
+    public static final int INDEX_FILE_LIMIT_LENGTH = 32;
     
     public static final int DATA_FILE_LIMIT_LENGTH = 1024 * 1024 * 256;
     
