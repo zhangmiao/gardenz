@@ -102,4 +102,78 @@ public class BytesUtils {
 	public static String getString(byte[] bytes) {
 		return getString(bytes, ENCODER);
 	}
+
+	/**
+	 * 字节数组中的 indexof 函数，与 String 类中的 indexOf类似
+	 * 
+	 * @para source 源字节数组
+	 * @para search 目标字符串
+	 * @para start 搜索的起始点
+	 * @return 如果找到，返回search的第一个字节在buffer中的下标，没有则返回-1
+	 */
+	private static int byteIndexOf(byte[] source, String search, int start) {
+		return byteIndexOf(source, search.getBytes(), start);
+	}
+
+	/**
+	 * 字节数组中的 indexof 函数，与 String 类中的 indexOf类似
+	 * 
+	 * @para source 源字节数组
+	 * @para search 目标字节数组
+	 * @para start 搜索的起始点
+	 * @return 如果找到，返回search的第一个字节在buffer中的下标，没有则返回-1
+	 */
+	private static int byteIndexOf(byte[] source, byte[] search, int start) {
+		int i;
+		if (search.length == 0) {
+			return 0;
+		}
+		int max = source.length - search.length;
+		if (max < 0)
+			return -1;
+		if (start > max)
+			return -1;
+		if (start < 0)
+			start = 0;
+		// 在source中找到search的第一个元素
+		searchForFirst: for (i = start; i <= max; i++) {
+			if (source[i] == search[0]) {
+				// 找到了search中的第一个元素后，比较剩余的部分是否相等
+				int k = 1;
+				while (k < search.length) {
+					if (source[k + i] != search[k]) {
+						continue searchForFirst;
+					}
+					k++;
+				}
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * 用于从一个字节数组中提取一个字节数组 类似于 String 类的substring()
+	 */
+	private static byte[] subBytes(byte[] source, int from, int end) {
+		byte[] result = new byte[end - from];
+		System.arraycopy(source, from, result, 0, end - from);
+		return result;
+	}
+
+	/**
+	 * 用于从一个字节数组中提取一个字符串类似于 String 类的substring()
+	 */
+	private static String subBytesString(byte[] source, int from, int end) {
+		return new String(subBytes(source, from, end));
+	}
+
+	/**
+	 * 
+	 * 返回字符串S转换为字节数组后的长度
+	 * 
+	 */
+	private static int bytesLen(String s) {
+		return s.getBytes().length;
+	}
 }
