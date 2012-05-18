@@ -104,24 +104,24 @@ public class BytesUtils {
 	}
 
 	/**
-	 * ×Ö½ÚÊı×éÖĞµÄ indexof º¯Êı£¬Óë String ÀàÖĞµÄ indexOfÀàËÆ
+	 * å­—èŠ‚æ•°ç»„ä¸­çš„ indexof å‡½æ•°ï¼Œä¸ String ç±»ä¸­çš„ indexOfç±»ä¼¼
 	 * 
-	 * @para source Ô´×Ö½ÚÊı×é
-	 * @para search Ä¿±ê×Ö·û´®
-	 * @para start ËÑË÷µÄÆğÊ¼µã
-	 * @return Èç¹ûÕÒµ½£¬·µ»ØsearchµÄµÚÒ»¸ö×Ö½ÚÔÚbufferÖĞµÄÏÂ±ê£¬Ã»ÓĞÔò·µ»Ø-1
+	 * @para source æºå­—èŠ‚æ•°ç»„
+	 * @para search ç›®æ ‡å­—ç¬¦ä¸²
+	 * @para start æœç´¢çš„èµ·å§‹ç‚¹
+	 * @return å¦‚æœæ‰¾åˆ°ï¼Œè¿”å›searchçš„ç¬¬ä¸€ä¸ªå­—èŠ‚åœ¨bufferä¸­çš„ä¸‹æ ‡ï¼Œæ²¡æœ‰åˆ™è¿”å›-1
 	 */
 	private static int byteIndexOf(byte[] source, String search, int start) {
 		return byteIndexOf(source, search.getBytes(), start);
 	}
 
 	/**
-	 * ×Ö½ÚÊı×éÖĞµÄ indexof º¯Êı£¬Óë String ÀàÖĞµÄ indexOfÀàËÆ
+	 * å­—èŠ‚æ•°ç»„ä¸­çš„ indexof å‡½æ•°ï¼Œä¸ String ç±»ä¸­çš„ indexOfç±»ä¼¼
 	 * 
-	 * @para source Ô´×Ö½ÚÊı×é
-	 * @para search Ä¿±ê×Ö½ÚÊı×é
-	 * @para start ËÑË÷µÄÆğÊ¼µã
-	 * @return Èç¹ûÕÒµ½£¬·µ»ØsearchµÄµÚÒ»¸ö×Ö½ÚÔÚbufferÖĞµÄÏÂ±ê£¬Ã»ÓĞÔò·µ»Ø-1
+	 * @para source æºå­—èŠ‚æ•°ç»„
+	 * @para search ç›®æ ‡å­—èŠ‚æ•°ç»„
+	 * @para start æœç´¢çš„èµ·å§‹ç‚¹
+	 * @return å¦‚æœæ‰¾åˆ°ï¼Œè¿”å›searchçš„ç¬¬ä¸€ä¸ªå­—èŠ‚åœ¨bufferä¸­çš„ä¸‹æ ‡ï¼Œæ²¡æœ‰åˆ™è¿”å›-1
 	 */
 	private static int byteIndexOf(byte[] source, byte[] search, int start) {
 		int i;
@@ -135,10 +135,10 @@ public class BytesUtils {
 			return -1;
 		if (start < 0)
 			start = 0;
-		// ÔÚsourceÖĞÕÒµ½searchµÄµÚÒ»¸öÔªËØ
+		// åœ¨sourceä¸­æ‰¾åˆ°searchçš„ç¬¬ä¸€ä¸ªå…ƒç´ 
 		searchForFirst: for (i = start; i <= max; i++) {
 			if (source[i] == search[0]) {
-				// ÕÒµ½ÁËsearchÖĞµÄµÚÒ»¸öÔªËØºó£¬±È½ÏÊ£ÓàµÄ²¿·ÖÊÇ·ñÏàµÈ
+				// æ‰¾åˆ°äº†searchä¸­çš„ç¬¬ä¸€ä¸ªå…ƒç´ åï¼Œæ¯”è¾ƒå‰©ä½™çš„éƒ¨åˆ†æ˜¯å¦ç›¸ç­‰
 				int k = 1;
 				while (k < search.length) {
 					if (source[k + i] != search[k]) {
@@ -153,7 +153,7 @@ public class BytesUtils {
 	}
 
 	/**
-	 * ÓÃÓÚ´ÓÒ»¸ö×Ö½ÚÊı×éÖĞÌáÈ¡Ò»¸ö×Ö½ÚÊı×é ÀàËÆÓÚ String ÀàµÄsubstring()
+	 * ç”¨äºä»ä¸€ä¸ªå­—èŠ‚æ•°ç»„ä¸­æå–ä¸€ä¸ªå­—èŠ‚æ•°ç»„ ç±»ä¼¼äº String ç±»çš„substring()
 	 */
 	private static byte[] subBytes(byte[] source, int from, int end) {
 		byte[] result = new byte[end - from];
@@ -162,7 +162,7 @@ public class BytesUtils {
 	}
 
 	/**
-	 * ÓÃÓÚ´ÓÒ»¸ö×Ö½ÚÊı×éÖĞÌáÈ¡Ò»¸ö×Ö·û´®ÀàËÆÓÚ String ÀàµÄsubstring()
+	 * ç”¨äºä»ä¸€ä¸ªå­—èŠ‚æ•°ç»„ä¸­æå–ä¸€ä¸ªå­—ç¬¦ä¸²ç±»ä¼¼äº String ç±»çš„substring()
 	 */
 	private static String subBytesString(byte[] source, int from, int end) {
 		return new String(subBytes(source, from, end));
@@ -170,7 +170,7 @@ public class BytesUtils {
 
 	/**
 	 * 
-	 * ·µ»Ø×Ö·û´®S×ª»»Îª×Ö½ÚÊı×éºóµÄ³¤¶È
+	 * è¿”å›å­—ç¬¦ä¸²Sè½¬æ¢ä¸ºå­—èŠ‚æ•°ç»„åçš„é•¿åº¦
 	 * 
 	 */
 	private static int bytesLen(String s) {
